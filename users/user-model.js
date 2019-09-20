@@ -8,6 +8,7 @@ module.exports = {
     updateUser,
     deleteUser,
     addItem,
+    addItemToDate,
     findItems,
     findItemBy,
     findItemById,
@@ -73,13 +74,14 @@ function addItem(item, id) {
         })
 }
 
+function addItemToDate() {}
+
 function findItems() {
     return db('list_items as li')
         .join('users as u', 'li.user_id', 'u.id')
         .select(
             'li.item_name',
-            'li.item_description',
-            'li.completed'
+            'li.item_description'
         );
 }
 
@@ -108,3 +110,4 @@ function deleteItem(id) {
         .where({id})
         .del();
 }
+
