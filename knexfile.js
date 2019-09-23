@@ -2,10 +2,10 @@
 module.exports = {
 
   development: {
-    client: 'sqlite3',
+    client: 'postgresql',
     useNullAsDefault: true,
     connection: {
-      filename: './data/users.db3'
+      filename: './data/development.db3'
     },
     migrations: {
       directory: './data/migrations'
@@ -21,7 +21,7 @@ module.exports = {
   },
 
   testing: {
-    client: 'sqlite3',
+    client: 'postgresql',
     useNullAsDefault: true,
     connection: {
       filename: './data/test.db3',
