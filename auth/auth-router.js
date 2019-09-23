@@ -1,11 +1,12 @@
 const router = require('express').Router();
+const {validateRegisterInputs, validateLoginCreds} = require('../auth/middleware.js');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const Users = require('../users/user-model.js');
 
 // for endpoints beginning with /api/auth
-router.post('/register', (req, res) => {
+router.post('/register', validateRegisterInputs, (req, res) => {
   let user = req.body;
   const hash = bcrypt.hashSync(user.password, 10); // 2 ^ n
   user.password = hash;
@@ -19,12 +20,13 @@ router.post('/register', (req, res) => {
             token
         });
     })
-    .catch(error => {
-        res.status(500).json(error);
+    .catch(err => {
+        console.log(err)
+        res.status(500).json(err.code);
     });
 });
 
-router.post('/login', (req, res) => {
+router.post('/login', validateLoginCreds, (req, res) => {
   let { username, password } = req.body;
 
   Users.findUserBy({ username })
@@ -35,14 +37,18 @@ router.post('/login', (req, res) => {
             const token = generateToken(user);
             res.status(200).json({
                 message: `Welcome ${user.username}!`,
+                user: user,
                 token
             });
       } else {
-            res.status(401).json({ message: 'Invalid Credentials' });
+            res.status(401).json({ message: 'User credentials invalid, please register...' });
       }
     })
-    .catch(error => {
-      res.status(500).json(error);
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({
+        message: 'Error logging in User'
+      });
     });
 });
 

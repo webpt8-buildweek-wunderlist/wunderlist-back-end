@@ -16,7 +16,7 @@ exports.up = function(knex) {
         })
         .createTable('item_do_date', tbl => {
             tbl.increments();
-            tbl.integer('item_id').unsigned().notNullable().references('id').inTable('list_items').onDelete('CASCADE').onUpdate('CASCADE');
+            tbl.integer('list_item_id').unsigned().notNullable().references('id').inTable('list_items').onDelete('CASCADE').onUpdate('CASCADE');
             tbl.string('do_date', 12).notNullable();
             tbl.string('do_time', 12);
             tbl.boolean('completed').notNullable().defaultTo(false);

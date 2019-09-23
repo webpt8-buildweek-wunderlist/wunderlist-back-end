@@ -21,9 +21,13 @@
     "helmet": "^3.21.0",
     "jsonwebtoken": "^8.5.1",
     "knex": "^0.19.4",
+    "pg": "^7.12.1",
     "sqlite3": "^4.1.0"
   },
   "devDependencies": {
-    "nodemon": "^1.19.2"
+    "cross-env": "^6.0.0",
+    "jest": "^24.9.0",
+    "nodemon": "^1.19.2",
+    "supertest": "^4.0.2"
   }
 }

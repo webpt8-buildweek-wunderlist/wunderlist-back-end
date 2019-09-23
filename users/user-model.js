@@ -1,37 +1,43 @@
 const db = require('../data/dbConfig.js');
 
 module.exports = {
+    // Users //
     addUser,
     findUsers,
     findUserBy,
     findUserById,
     updateUser,
     deleteUser,
+    // Items //
     addItem,
     findItems,
     findItemBy,
     findItemById,
     updateItem,
-    deleteItem
+    deleteItem,
+    // Dates //
+    addItemToDate,
+    findDates,
+    findDateById,
+    updateDate,
+    deleteDate
 };
 
 
-function addUser(user) {
-    return db('users')
+// *********************************************** //
+// *****                USER                ****** //
+// *********************************************** //
+
+async function addUser(user) {
+    const [id] = await db('users')
         .insert(user, 'id')
-        .then(ids => {
-            const [id] = ids;
-            return findUserById(id);
-        });
+        .returning('id');
+
+        return findUserById(id);
 }
 
 function findUsers() {
     return db('users')
-        .select(
-            'id',
-            'username',
-            'role'
-        );
 }
 
 function findUserBy(filter) {
@@ -48,10 +54,8 @@ function findUserById(id) {
 function updateUser(changes, id) {
     return db('users')
         .where({id})
-        .update(changes)
-        .then(ids => {
-            return findUserById(ids[0])
-        })
+        .update(changes, '*')
+        .returning('id')
 }
 
 function deleteUser(id) {
@@ -59,6 +63,11 @@ function deleteUser(id) {
         .where({id})
         .del();
 }
+
+
+// *********************************************** //
+// *****               ITEMS                ****** //
+// *********************************************** //
 
 function addItem(item, id) {
     return db('list_items as li')
@@ -68,6 +77,7 @@ function addItem(item, id) {
             item_description: item.item_description,
             user_id: id
         })
+        .returning('id')
         .then(ids => {
             return findItemById(ids[0])
         })
@@ -77,9 +87,9 @@ function findItems() {
     return db('list_items as li')
         .join('users as u', 'li.user_id', 'u.id')
         .select(
+            'li.id',
             'li.item_name',
-            'li.item_description',
-            'li.completed'
+            'li.item_description'
         );
 }
 
@@ -98,13 +108,65 @@ function updateItem(changes, id) {
     return db('list_items')
         .where({id})
         .update(changes)
-        .then(ids => {
-            return findItemById(ids[0])
-        })
+        .returning('id')
+        
 }
 
 function deleteItem(id) {
     return db('list_items')
+        .where({id})
+        .del();
+}
+
+
+// *********************************************** //
+// *****                DATES               ****** //
+// *********************************************** //
+
+function addItemToDate(date, id) {
+    return db('item_do_date as idd')
+        .join('list_items as li', 'idd.list_item_id', 'li.id')
+        .insert({
+            list_item_id: id,
+            do_date: date.do_date,
+            do_time: date.do_time
+        })
+        .returning('id')
+        .then(ids => {
+            return findDateById(ids[0])
+        })
+}
+
+function findDates() {
+    return db('item_do_date as idd')
+        .join('list_items as li', 'idd.list_item_id', 'li.id')
+        .join('users as u', 'li.user_id', 'u.id')
+        .select(
+            'idd.id',
+            'li.item_name',
+            'li.item_description',
+            'idd.do_date',
+            'idd.do_time',
+            'idd.completed',
+            'li.created_at'
+        );
+}
+
+function findDateById(id) {
+    return db('item_do_date')
+        .where({id})
+        .first();
+}
+
+function updateDate(changes, id) {
+    return db('item_do_date')
+        .where({id})
+        .update(changes, '*')
+        .returning('id')
+}
+
+function deleteDate(id) {
+    return db('item_do_date')
         .where({id})
         .del();
 }
