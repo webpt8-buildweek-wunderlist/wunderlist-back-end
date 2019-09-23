@@ -1,5 +1,7 @@
 const jwt = require('jsonwebtoken');
 
+const jwtKey = process.env.JWT_SECRET || 'secret';
+
 module.exports = {
   restricted,
   validateRegisterInputs,
@@ -15,7 +17,7 @@ function restricted(req, res, next) {
   //    rehash the header + payload + secret and see if it matches our verify signature
 
   if(token) {
-    jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
+    jwt.verify(token, jwtKey, (err, decodedToken) => {
       if(err) {
         console.log('failed verify', err);
         res.status(401).json({
