@@ -1,53 +1,53 @@
-const dbConnection = process.env.DATABASE_URL
-const pg = require('pg');
-
+// Update with your config settings.
 module.exports = {
 
-    // development: {
-    //   client: 'sqlite3',
-    //   useNullAsDefault: true,
-    //   connection: {
-    //     filename: './data/users.db3',
-    //   },
-    //   migrations: {
-    //     directory: './data/migrations'
-    //   },
-    //   seeds: {
-    //     directory: './data/seeds'
-    //   },
-    //   pool: {
-    //     afterCreate: (conn, done) => {
-    //       conn.run('PRAGMA foreign_keys = ON', done);
-    //     },
-    //   },
-    // },
-    // testing: {
-    //   client: 'sqlite3',
-    //   useNullAsDefault: true,
-    //   connection: {
-    //     filename: './data/test.db3',
-    //   },
-    //   migrations: {
-    //     directory: './data/migrations'
-    //   },
-    //   seeds: {
-    //     directory: './data/seeds'
-    //   },
-    //   pool: {
-    //     afterCreate: (conn, done) => {
-    //       conn.run('PRAGMA foreign_keys = ON', done);
-    //     },
-    //   },
-    // },
-    production: {
-      client: pg,
-      connection: dbConnection,
-      migrations: {
-        directory: './data/migrations',
+  development: {
+    client: 'sqlite3',
+    useNullAsDefault: true,
+    connection: {
+      filename: './data/users.db3'
+    },
+    migrations: {
+      directory: './data/migrations'
+    },
+    seeds: {
+      directory: './data/seeds'
+    },
+    pool: {
+      afterCreate: (conn, done) => {
+        conn.run('PRAGMA foreign_keys = ON', done);
       },
-      seeds: {
-        directory: './data/seeds',
+    },
+  },
+
+  testing: {
+    client: 'sqlite3',
+    useNullAsDefault: true,
+    connection: {
+      filename: './data/test.db3',
+    },
+    migrations: {
+      directory: './data/migrations'
+    },
+    seeds: {
+      directory: './data/seeds'
+    },
+    pool: {
+      afterCreate: (conn, done) => {
+        conn.run('PRAGMA foreign_keys = ON', done);
       },
-      ssl: true
-    }
+    },
+  },
+
+  production: {
+    client: 'postgresql',
+    connection: process.env.DATABASE_URL,
+    migrations: {
+      directory: './data/migrations',
+    },
+    seeds: {
+      directory: './data/seeds',
+    },
+    ssl: true
+  }
 };
