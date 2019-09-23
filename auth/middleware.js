@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-const jwtKey = process.env.JWT_SECRET || 'secret';
+const jwtKey = process.env.JWT_SECRET || 'keep it a secret';
 
 module.exports = {
   restricted,
