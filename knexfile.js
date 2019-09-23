@@ -1,4 +1,5 @@
 const dbConnection = process.env.DATABASE_URL
+const pg = require('pg');
 
 module.exports = {
 
@@ -39,7 +40,7 @@ module.exports = {
     //   },
     // },
     production: {
-      client: 'pg',
+      client: pg,
       connection: dbConnection,
       migrations: {
         directory: './data/migrations',
