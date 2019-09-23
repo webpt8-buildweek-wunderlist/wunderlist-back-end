@@ -5,15 +5,14 @@ const jwt = require('jsonwebtoken');
 
 const Users = require('../users/user-model.js');
 
-// for endpoints beginning with /api/auth
+
 router.post('/register', validateRegisterInputs, (req, res) => {
   let user = req.body;
-  const hash = bcrypt.hashSync(user.password, 10); // 2 ^ n
+  const hash = bcrypt.hashSync(user.password, 10);
   user.password = hash;
 
   Users.addUser(user)
     .then(saved => {
-        // A JWT should be generated
         const token = generateToken(saved)
         res.status(201).json({
             user: saved,
@@ -33,7 +32,6 @@ router.post('/login', validateLoginCreds, (req, res) => {
     .first()
     .then(user => {
       if (user && bcrypt.compareSync(password, user.password)) {
-          // A JWT should be generated
             const token = generateToken(user);
             res.status(200).json({
                 message: `Welcome ${user.username}!`,
@@ -53,9 +51,6 @@ router.post('/login', validateLoginCreds, (req, res) => {
 });
 
 function generateToken(user) {
-  // header payload and verify signature
-  // payload -> username, id, roles, exp date
-  // verify signature -> a secret
 
   const payload = {
     userId: user.id,
