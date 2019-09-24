@@ -83,9 +83,12 @@ function addItem(item, id) {
         })
 }
 
-function findItems() {
+function findItems(id) {
     return db('list_items as li')
         .join('users as u', 'li.user_id', 'u.id')
+        .where({
+            user_id: id
+        })
         .select(
             'li.id',
             'li.item_name',

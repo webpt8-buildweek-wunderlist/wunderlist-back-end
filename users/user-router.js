@@ -148,7 +148,6 @@ router.post('/:user_id/items', restricted, (req, res) => {
 
     Users.findUserById(user_id)
         .then(user => {
-            console.log(user_id);
             if(user) {
                 Users.addItem(itemData, user_id)
                     .then(item => {
@@ -182,7 +181,7 @@ router.get('/:user_id/items', restricted, (req, res) => {
     Users.findUserById(user_id)
         .then(user => {
             if(user) {
-                Users.findItems()
+                Users.findItems(user_id)
                     .then(items => {
                         const userObj = {
                             ...user,
