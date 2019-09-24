@@ -7,22 +7,24 @@ const Users = require('../users/user-model.js');
 
 
 router.post('/register', validateRegisterInputs, (req, res) => {
-  let user = req.body;
-  const hash = bcrypt.hashSync(user.password, 10);
-  user.password = hash;
+  console.log(process.env.DATABASE_URL)
+  console.log(process.env)
+  // let user = req.body;
+  // const hash = bcrypt.hashSync(user.password, 10);
+  // user.password = hash;
 
-  Users.addUser(user)
-    .then(saved => {
-        const token = generateToken(saved)
-        res.status(201).json({
-            user: saved,
-            token
-        });
-    })
-    .catch(err => {
-        console.log(err)
-        res.status(500).json(err.code);
-    });
+  // Users.addUser(user)
+  //   .then(saved => {
+  //       const token = generateToken(saved)
+  //       res.status(201).json({
+  //           user: saved,
+  //           token
+  //       });
+  //   })
+  //   .catch(err => {
+  //       console.log(err)
+  //       res.status(500).json(err.code);
+  //   });
 });
 
 router.post('/login', validateLoginCreds, (req, res) => {
