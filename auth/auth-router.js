@@ -1,9 +1,11 @@
-const router = require('express').Router();
+const express = require('express');
 const {validateRegisterInputs, validateLoginCreds} = require('../auth/middleware.js');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const Users = require('../users/user-model.js');
+
+const router = express.Router();
 
 
 router.post('/register', validateRegisterInputs, (req, res) => {
