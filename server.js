@@ -21,6 +21,7 @@ server.get('/', (req, res) => {
         <p>Url to Login endpoint <strong>'/api/users/login'</strong></p>
         <p>Url to Register endpoint <strong>'/api/users/register'</strong></p>
       </div>`);
+      console.log(process.env.DATABASE_URL);
   });
 
 module.exports = server;
