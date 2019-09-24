@@ -300,7 +300,7 @@ router.get('/:user_id/dates', restricted, (req, res) => {
     Users.findUserById(user_id)
         .then(user => {
             if(user) {
-                Users.findDates()
+                Users.findDates(user_id)
                     .then(dates => {
                         const userobj = {
                             ...user,
