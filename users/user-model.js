@@ -140,10 +140,13 @@ function addItemToDate(date, id) {
         })
 }
 
-function findDates() {
+function findDates(id) {
     return db('item_do_date as idd')
         .join('list_items as li', 'idd.list_item_id', 'li.id')
         .join('users as u', 'li.user_id', 'u.id')
+        .where({
+            user_id: id
+        })
         .select(
             'idd.id',
             'li.item_name',
